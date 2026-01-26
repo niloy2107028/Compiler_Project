@@ -88,7 +88,7 @@ sudo apt-get install flex gcc
 
 ```bash
 cd Compiler_Project
-.\flex\win_flex.exe lexer.l
+win_flex lexer.l
 gcc -g -Wall lex.yy.c -o bangla_lexer.exe
 ```
 
@@ -192,9 +192,7 @@ This is equivalent to:
 ```
 Compiler_Project/
 ├── lexer.l              - The lexical analyzer I made
-├── token.h              - Token definitions
 ├── test_program.txt     - Test file
-├── flex/                - Flex tool (win_flex.exe)
 └── README.md            - This file
 ```
 

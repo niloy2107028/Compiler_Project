@@ -1,0 +1,9 @@
+win_bison -d -Wall parser.y
+
+win_flex lexer.l
+
+gcc -std=c11 -Wall -Wextra -pedantic -I./src src/main.c src/ast.c src/symbol_table.c src/semantic.c src/ir.c parser.tab.c lex.yy.c -o bangla_compiler.exe
+
+.\bangla_compiler.exe test_program.txt output.tac
+
+"7" | .\bangla_compiler.exe test_program2.txt output2.tac

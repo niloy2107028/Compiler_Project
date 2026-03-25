@@ -69,7 +69,7 @@
 /* First part of user prologue.  */
 #line 1 "parser.y"
 
-/* ===================== C CODE SECTION ===================== */
+/*   C CODE SECTION   */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1890,7 +1890,7 @@ yyreturnlab:
 #line 303 "parser.y"
 
 
-/* ===================== ERROR FUNCTION ===================== */
+/*   ERROR FUNCTION   */
 
 void yyerror(const char *s) {
     fprintf(stderr, "Syntax error at line %d: %s\n", line_number, s);

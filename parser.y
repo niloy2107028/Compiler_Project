@@ -1,5 +1,5 @@
 %{
-/* ===================== C CODE SECTION ===================== */
+/*   C CODE SECTION   */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +19,7 @@ void yyerror(const char *s);
 /* Enable location tracking (line numbers etc.) */
 %locations
 
-/* ===================== DATA TYPES ===================== */
+/*   DATA TYPES   */
 
 /* Union to store different types of values */
 %union {
@@ -33,7 +33,7 @@ void yyerror(const char *s);
     ValueType type;      // type (int/float)
 }
 
-/* ===================== TOKENS ===================== */
+/*   TOKENS   */
 
 /* Keywords */
 %token BEGIN_KW END_KW INT_KW FLOAT_KW IF_KW ELSE_KW WHILE_KW FOR_KW INPUT_KW OUTPUT_KW
@@ -54,7 +54,7 @@ void yyerror(const char *s);
 %token <int_val> INT_LITERAL
 %token <float_val> FLOAT_LITERAL
 
-/* ===================== NON-TERMINAL TYPES ===================== */
+/*   NON-TERMINAL TYPES   */
 
 %type <stmt> program statement block declaration assignment input_stmt output_stmt if_stmt while_stmt for_stmt func_def return_stmt
 %type <stmt_list> stmt_list
@@ -62,7 +62,7 @@ void yyerror(const char *s);
 %type <expr_list> arg_list opt_arg_list
 %type <type> type_spec
 
-/* ===================== PRECEDENCE ===================== */
+/*   PRECEDENCE   */
 
 %left EQUAL NOT_EQUAL GREATER LESS GREATER_EQUAL LESS_EQUAL
 %left PLUS MINUS
@@ -74,7 +74,7 @@ void yyerror(const char *s);
 
 %%
 
-/* ===================== GRAMMAR RULES ===================== */
+/*   GRAMMAR RULES   */
 
 /* Program must start with BEGIN and end with END */
 program
@@ -230,7 +230,7 @@ return_stmt
       }
     ;
 
-/* ===================== EXPRESSIONS ===================== */
+/*   EXPRESSIONS   */
 
 expr
     : expr PLUS expr { $$ = ast_make_binary(@2.first_line, OP_ADD, $1, $3); }
@@ -302,7 +302,7 @@ arg_list
 
 %%
 
-/* ===================== ERROR FUNCTION ===================== */
+/*   ERROR FUNCTION   */
 
 void yyerror(const char *s) {
     fprintf(stderr, "Syntax error at line %d: %s\n", line_number, s);

@@ -1,312 +1,424 @@
-# Bangla Programming Language Compiler
+# 🇧🇩 Bangla Programming Language Compiler
 
-## About This Project
+> Write code in Bangla! A complete compiler that lets you program using Bengali keywords and syntax.
 
-I'm building a compiler for a programming language that uses Bangla keywords instead of English. The goal is to translate Bangla source code into executable form. The syntax is based on C++.
+## 📖 What is This?
 
----
+This is a **fully functional compiler** for a programming language that uses **Bangla (Bengali) keywords**. Instead of writing `if`, `while`, and `print`, you can write `যদি`, `যতক্ষণ`, and `দেখাও`!
 
-## Week 1 Progress (First 5%)
+**Example Program:**
 
-### ✅ Completed Tasks
-
-1. **Lexical Analyzer (Flex) - `lexer.l`**
-   - Recognizes all Bangla keywords: পুন, ভগ, যদি, যদিনা, যতক্ষণ, লুপ, ইনপুট, দেখাও, শুরু, শেষ
-   - Handles Bangla numbers (০-৯) and English numbers (0-9)
-   - Recognizes Bangla and English identifiers
-   - Tokenizes operators: +, -, \*, /, =, >, <, >=, <=, ==, !=
-   - Handles delimiters: ( ) { } ; ,
-
-2. **Parser (Bison) - `parser.y`**
-   - Grammar rules for variable declarations
-   - Grammar rules for arithmetic expressions
-   - Grammar rules for conditional statements (if-else)
-   - Grammar rules for loops (while, for)
-   - Grammar rules for input/output operations
-
-3. **Token Header - `token.h`**
-   - Defines all token types
-   - Token structure definition
-
-4. **Build System - `Makefile`**
-   - Automated compilation process
-   - Clean and test targets
-
----
-
-## Supported Features
-
-### Keywords Mapping
-
-| C++ Keyword | Bangla Keyword | Purpose          |
-| ----------- | -------------- | ---------------- |
-| int         | পুন            | Integer variable |
-| float       | ভগ             | Floating-point   |
-| if          | যদি            | Condition        |
-| else        | যদিনা          | Else block       |
-| while       | যতক্ষণ         | While loop       |
-| for         | লুপ            | For loop         |
-| cin         | ইনপুট          | Input            |
-| cout        | দেখাও          | Output           |
-| {           | শুরু           | Block start      |
-| }           | শেষ            | Block end        |
-
-### What the Language Can Do (Planned)
-
-- Declare integer and float variables
-- Do math calculations
-- If-else conditions
-- While and for loops
-- Input/output
-- Comparisons
-
----
-
-## How to Build and Run
-
-### What You Need
-
-- Flex (for lexical analysis)
-- GCC (C compiler)
-
-### Installation
-
-**Windows:**
-
-1. Install MinGW or Cygwin
-2. Get Flex from [GnuWin32](http://gnuwin32.sourceforge.net/packages/flex.htm)
-
-**Linux:**
-
-```bash
-sudo apt-get install flex gcc
+```bengali
+শুরু
+পুন x = ১০;
+পুন y = ২০;
+পুন sum = x + y;
+দেখাও sum;
+শেষ
 ```
 
+**Output:** `30`
+
 ---
 
-### Building
+## ✨ Features
 
-```bash
-cd Compiler_Project
+- ✅ **Bangla Keywords** - Use Bengali words to write code
+- ✅ **Bangla Numerals** - Support for Bengali digits (০-৯)
+- ✅ **Complete Compiler Pipeline** - Lexer → Parser → AST → Semantic Analysis → TAC Generation
+- ✅ **Type Checking** - Catches type errors before execution
+- ✅ **Control Flow** - If/else statements, while loops, for loops
+- ✅ **Functions** - Define and call functions
+- ✅ **Intermediate Code** - Generates Three-Address Code (TAC) for optimization
+- ✅ **Error Messages** - Clear error reporting with line numbers
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **GCC** (C compiler)
+- **Flex** (lexer generator) - `win_flex` on Windows
+- **Bison** (parser generator) - `win_bison` on Windows
+
+### Build the Compiler
+
+```powershell
+# Step 1: Generate parser
+win_bison -d -Wall parser.y
+
+# Step 2: Generate lexer
 win_flex lexer.l
-gcc -g -Wall lex.yy.c -o bangla_lexer.exe
+
+# Step 3: Compile
+gcc -std=c11 -Wall -Wextra -pedantic -I./src src/main.c src/ast.c src/symbol_table.c src/semantic.c src/ir.c parser.tab.c lex.yy.c -o bangla_compiler.exe
 ```
 
-If make doesn't work:
+### Run Your First Program
 
-```bash
-flex lexer.l
-gcc -g -Wall lex.yy.c -o bangla_lexer
-```
+```powershell
+# Run the compiler
+.\bangla_compiler.exe test_program.txt output.tac
 
----
-
-### Running
-
-```bash
-./bangla_lexer test_program.txt
-```
-
-On Windows:
-
-```bash
-bangla_lexer.exe test_program.txt
-```
-
-### Example Bangla Program
-
-Create a file `test_program.txt` with the following content:
-
-```
-শুরু
-পূর্ণসংখ্যা ক;
-ক = ১০;
-দেখাও ক;
-শেষ
-```
-
-This is equivalent to:
-
-```c++
-{
-    int k;
-    k = 10;
-    cout << k;
-}
+# Run test programs
+.\bangla_compiler.exe tests/valid_core.bn
+.\bangla_compiler.exe tests/valid_loop.bn
+.\bangla_compiler.exe tests/valid_function.bn
 ```
 
 ---
 
-## Sample Programs (for future testing)
+## 📝 Language Reference
 
-### 1. Simple Variable
+### Keywords
 
-```
+| Bangla     | English  | Purpose               |
+| ---------- | -------- | --------------------- |
+| **শুরু**   | begin    | Start a block         |
+| **শেষ**    | end      | End a block           |
+| **পুন**    | int      | Integer variable      |
+| **ভগ**     | float    | Float variable        |
+| **যদি**    | if       | Conditional statement |
+| **যদিনা**  | else     | Else statement        |
+| **যতক্ষণ** | while    | While loop            |
+| **লুপ**    | for      | For loop              |
+| **ইনপুট**  | input    | Read input            |
+| **দেখাও**  | print    | Print output          |
+| **ফাংশন**  | function | Function definition   |
+| **ফেরত**   | return   | Return statement      |
+
+### Data Types
+
+- **পুন** (Integer) - Whole numbers: `০`, `১`, `১০`, `-৫`
+- **ভগ** (Float) - Decimal numbers: `৩.১৪`, `২.৫`, `-১.৫`
+
+### Operators
+
+**Arithmetic:** `+`, `-`, `*`, `/`
+**Comparison:** `>`, `<`, `>=`, `<=`, `==`, `!=`
+
+---
+
+## 📚 Example Programs
+
+### 1. Hello World (Print a Number)
+
+```bengali
 শুরু
-পুন ক;
-ক = ১০;
-দেখাও ক;
+দেখাও ৪২;
 শেষ
 ```
 
-### 2. Math Expression
+### 2. Variables and Arithmetic
 
-```
+```bengali
 শুরু
-পুন ক, খ;
-ক = ৫;
-খ = ক + ৩ * ২;
-দেখাও খ;
+পুন a = ৫;
+পুন b = ৩;
+পুন sum = a + b;
+দেখাও sum;
 শেষ
 ```
 
-### 3. If-Else
+**Output:** `8`
 
-```
+### 3. If-Else Statement
+
+```bengali
 শুরু
-পুন ক;
-ক = ৭;
-যদি (ক > ৫)
-দেখাও ক;
+পুন age = ১৮;
+যদি (age >= ১৮)
+শুরু
+    দেখাও ১;
+শেষ
 যদিনা
-দেখাও ০;
-শেষ
-```
-
-### 4. Loop
-
-```
 শুরু
-পুন ক;
-ক = ১;
-যতক্ষণ (ক <= ৫)
-দেখাও ক;
-ক = ক + ১;
+    দেখাও ০;
+শেষ
 শেষ
 ```
+
+**Output:** `1`
+
+### 4. While Loop
+
+```bengali
+শুরু
+পুন i = ১;
+যতক্ষণ (i <= ৫)
+শুরু
+    দেখাও i;
+    i = i + ১;
+শেষ
+শেষ
+```
+
+**Output:** `1 2 3 4 5`
+
+### 5. Function Definition
+
+```bengali
+শুরু
+ফাংশন পুন calculate()
+শুরু
+    ফেরত ২১ + ২১;
+শেষ
+
+পুন result = calculate();
+দেখাও result;
+শেষ
+```
+
+**Output:** `42`
 
 ---
 
-## Files in This Project
+## 🏗️ Project Structure
 
 ```
 Compiler_Project/
-├── lexer.l              - The lexical analyzer I made
-├── test_program.txt     - Test file
-└── README.md            - This file
+├── src/                    # Source code
+│   ├── main.c             # Main entry point
+│   ├── ast.c/h            # Abstract Syntax Tree
+│   ├── symbol_table.c/h   # Symbol table (variable tracking)
+│   ├── semantic.c/h       # Semantic analysis & execution
+│   └── ir.c/h             # Intermediate code generation (TAC)
+│
+├── lexer.l                # Flex lexer (tokenization)
+├── parser.y               # Bison parser (syntax analysis)
+├── token.h                # Token definitions
+│
+├── tests/                 # Test programs
+│   ├── valid_core.bn      # Variables, if/else
+│   ├── valid_loop.bn      # Loops
+│   └── valid_function.bn  # Functions
+│
+├── Docs/                  # Documentation
+└── understanding.md       # Complete tutorial (12,000+ lines!)
 ```
 
 ---
 
-## Testing
+## 🔬 Compiler Stages
 
-Run the lexer:
+This compiler implements a complete compilation pipeline:
+
+```
+Source Code (.bn)
+    ↓
+1. Lexical Analysis (Flex)
+   → Converts text to tokens
+    ↓
+2. Syntax Analysis (Bison)
+   → Validates grammar, builds parse tree
+    ↓
+3. AST Construction
+   → Creates Abstract Syntax Tree
+    ↓
+4. Semantic Analysis
+   → Type checking, variable validation
+    ↓
+5. Execution
+   → Runs the program (interpreter mode)
+    ↓
+6. TAC Generation
+   → Generates Three-Address Code (IR)
+    ↓
+Output: Console output + TAC file
+```
+
+---
+
+## 🧪 Test Programs
+
+We include three comprehensive test programs:
+
+### 1. **valid_core.bn** - Core Features
+
+Tests: Variables, arithmetic, type coercion, if/else
+
+```powershell
+.\bangla_compiler.exe tests/valid_core.bn
+# Output: 12.500000
+```
+
+### 2. **valid_loop.bn** - Loop Constructs
+
+Tests: While loops, for loops
+
+```powershell
+.\bangla_compiler.exe tests/valid_loop.bn
+# Output: 1 2 3 1 2 3
+```
+
+### 3. **valid_function.bn** - Functions
+
+Tests: Function definition, calling, return
+
+```powershell
+.\bangla_compiler.exe tests/valid_function.bn
+# Output: 42
+```
+
+---
+
+## 📊 What Gets Generated?
+
+### Console Output
+
+The program execution results:
+
+```
+11
+Compilation and execution successful. TAC written to output.tac
+```
+
+### TAC File (Intermediate Representation)
+
+Three-Address Code for optimization and further compilation:
+
+```
+decl int ক
+decl int খ
+ক = 5
+t1 = ক + 6
+খ = t1
+print খ
+```
+
+---
+
+## 🎯 Supported Features
+
+### ✅ Implemented
+
+- [x] Variable declarations (`পুন x;`, `ভগ y;`)
+- [x] Assignments (`x = ১০;`)
+- [x] Arithmetic expressions (`a + b * c`)
+- [x] Comparison operators (`x > y`, `a == b`)
+- [x] If/Else statements
+- [x] While loops
+- [x] For loops
+- [x] Functions (zero parameters)
+- [x] Input/Output
+- [x] Type checking
+- [x] Bangla numerals (০-৯)
+- [x] Symbol table with scoping
+- [x] Error reporting
+- [x] TAC generation
+- [x] Constant folding optimization
+
+### 🚧 Current Limitations
+
+- Functions support **zero parameters only**
+- No arrays or strings yet
+- No logical operators (`&&`, `||`)
+- No modulo operator (`%`)
+
+---
+
+## 📖 Documentation
+
+- **understanding.md** - Complete 12,000+ line tutorial covering every part of the compiler
+- **Docs/README-Project-Deep-Dive.md** - Technical deep dive
+- **Docs/README-Teacher-Demo.md** - Teacher presentation guide
+- **Docs/Rubric-Compliance-Matrix.md** - Rubric compliance details
+
+---
+
+## 🛠️ Building from Source
+
+### Windows
+
+```powershell
+# Generate parser and lexer
+win_bison -d -Wall parser.y
+win_flex lexer.l
+
+# Compile
+gcc -std=c11 -Wall -Wextra -pedantic -I./src src/main.c src/ast.c src/symbol_table.c src/semantic.c src/ir.c parser.tab.c lex.yy.c -o bangla_compiler.exe
+
+# Run
+.\bangla_compiler.exe test_program.txt output.tac
+```
+
+### Linux/Mac
 
 ```bash
-.\bangla_lexer.exe test_program.txt
-```
+# Generate parser and lexer
+bison -d -Wall parser.y
+flex lexer.l
 
-Clean up:
+# Compile
+gcc -std=c11 -Wall -Wextra -pedantic -I./src src/main.c src/ast.c src/symbol_table.c src/semantic.c src/ir.c parser.tab.c lex.yy.c -o bangla_compiler
 
-```bash
-make clean
-```
-
-### What You'll See
-
-Output from test_program.txt:
-
-```
-Starting lexical analysis...
-
-Token: BEGIN
-Token: INT
-Token: BANGLA_IDENTIFIER (ক)
-Token: COMMA
-Token: BANGLA_IDENTIFIER (খ)
-Token: SEMICOLON
-Token: BANGLA_IDENTIFIER (ক)
-Token: ASSIGN
-Token: BANGLA_NUMBER (৫)
-Token: SEMICOLON
-Token: BANGLA_IDENTIFIER (খ)
-Token: ASSIGN
-Token: BANGLA_IDENTIFIER (ক)
-Token: PLUS
-Token: BANGLA_NUMBER (৩)
-Token: MULTIPLY
-Token: BANGLA_NUMBER (২)
-Token: SEMICOLON
-Token: OUTPUT
-Token: BANGLA_IDENTIFIER (খ)
-Token: SEMICOLON
-Token: END
-
-Lexical analysis completed.
+# Run
+./bangla_compiler test_program.txt output.tac
 ```
 
 ---
 
-## Technical Notes
+## 🎓 Educational Value
 
-**Week 1 - Lexical Analysis**
+This project demonstrates:
 
-- Takes Bangla code as input
-- Outputs tokens to console
-- Handles UTF-8 Bangla characters
-- Status: Done ✓
+1. **Compiler Design Principles** - Complete pipeline from source to IR
+2. **Lexical Analysis** - Token recognition with UTF-8 support
+3. **Syntax Analysis** - Grammar design and parsing
+4. **Semantic Analysis** - Type systems and symbol tables
+5. **Code Generation** - Intermediate representation
+6. **Optimization** - Constant folding in AST
+7. **Software Engineering** - Modular design, clean code
 
-**Week 2-3 - Parser (Not started yet)**
+Perfect for:
 
-- Will use Bison
-- Grammar rules
-- Syntax checking
-
-**Token Types:**
-
-- 10 keywords
-- 11 operators
-- 6 delimiters
-- Identifiers (Bangla & English)
-- Numbers (Bangla & English)
+- 📚 Compiler design courses
+- 🎯 Understanding compilation process
+- 🌐 Internationalization in programming languages
+- 🧪 Experimenting with language design
 
 ---
 
-## Future Plan
+## 🤝 Contributing
 
-1. **Parser** (Week 2-3)
-   - Add Bison parser
-   - Grammar rules
-2. **Semantic Analysis** (Week 4-5)
-   - Type checking
-   - Scope validation
+Want to add features? Here are some ideas:
 
-3. **Code Generation**
-   - Translate to C code
-4. **Optimization** (maybe)
-   - If time permits
-
----
-
-## Current Limitations
-
-Right now only the lexer works. Still need to add:
-
-- Parser (syntax checking)
-- Semantic analyzer
-- Code generator
-- Better error messages
-- Functions
-- Arrays
+- [ ] Add function parameters
+- [ ] Add arrays
+- [ ] Add strings
+- [ ] Add logical operators (`&&`, `||`, `!`)
+- [ ] Add modulo operator (`%`)
+- [ ] Generate assembly code
+- [ ] Add more optimizations
+- [ ] Better error messages
 
 ---
 
-## References
+## 📜 License
 
-1. Compilers: Principles, Techniques, and Tools (Aho, Lam, Sethi, Ullman)
-2. Flex documentation
-3. Course materials from Compiler Lab
+This project was created as part of a Compiler Design course.
 
 ---
 
-**Week 1 - January 2026**
+## 🙏 Acknowledgments
+
+Built using:
+
+- **Flex** - Fast Lexical Analyzer
+- **Bison** - GNU Parser Generator
+- **GCC** - GNU Compiler Collection
+
+---
+
+## 📬 Contact
+
+For questions or feedback about this project, please refer to the documentation in the `Docs/` folder.
+
+---
+
+**এখন বাংলায় কোড লিখুন! (Now write code in Bangla!)** 🇧🇩
+
+---
+
+_Last Updated: March 2024_
